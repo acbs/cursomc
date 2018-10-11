@@ -1,6 +1,7 @@
 package com.andrecarlos.cursomc.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ public class Estado implements Serializable{
 	private String nome;
 	
 	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidades;
+	private List<Cidade> cidades = new ArrayList<>();
 	
 	public Estado() {}
 

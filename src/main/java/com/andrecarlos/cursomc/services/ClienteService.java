@@ -28,10 +28,10 @@ public class ClienteService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
 
-	public Cliente update(Cliente cliente) {
-		Cliente newCliente = find(cliente.getId());
-		updateData(newCliente, cliente);
-		return repo.save(newCliente);
+	public Cliente update(Cliente obj) {
+		Cliente newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void delete(Integer id) {
@@ -52,12 +52,12 @@ public class ClienteService {
 		return repo.findAll(pageRequest);
 	}
 	
-	public Cliente fromDTO(ClienteDTO clienteDTO) {
-		return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null); 
+	public Cliente fromDTO(ClienteDTO objDTO) {
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null); 
 	}
 	
-	private void updateData(Cliente newCliente, Cliente cliente) {
-		newCliente.setNome(cliente.getNome());
-		newCliente.setEmail(cliente.getEmail());
+	private void updateData(Cliente newObj, Cliente obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
 	}
 }

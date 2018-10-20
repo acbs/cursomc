@@ -38,19 +38,19 @@ public class CategoriaResource {
 	// @RequestBody converte o json para objeto java
 	// <Void> retorna o corpo vazio
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-		Categoria categoria = service.fromDTO(categoriaDTO);
-		categoria = service.insert(categoria);
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
+		Categoria obj = service.fromDTO(objDTO);
+		obj = service.insert(obj);
 		// Por boas práticas, após inserir iremos retornar a url do objeto
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Integer id) {
-		Categoria categoria = service.fromDTO(categoriaDTO);
-		categoria.setId(id);
-		categoria = service.update(categoria);
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id) {
+		Categoria obj = service.fromDTO(objDTO);
+		obj.setId(id);
+		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	

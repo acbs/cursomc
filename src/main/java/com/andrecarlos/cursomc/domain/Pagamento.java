@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.andrecarlos.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Informando qual strategy para gerar tabela no banco (se cria uma tabela para cada filho ou não)
@@ -21,6 +22,7 @@ public abstract class Pagamento implements Serializable{ // abstract não conseg
 	private Integer id;
 	private Integer estado;
 	
+	@JsonBackReference // Inforando para não serializar o pedido (Evitar o json entrar em loop)
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId // Garantindo que esté id é o mesmo id da classe pedido

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.andrecarlos.cursomc.domain.Categoria;
+import com.andrecarlos.cursomc.dto.CategoriaDTO;
 import com.andrecarlos.cursomc.repositories.CategoriaRepository;
 import com.andrecarlos.cursomc.services.exceptions.DataIntegrityException;
 import com.andrecarlos.cursomc.services.exceptions.ObjectNotFoundException;
@@ -22,19 +23,19 @@ public class CategoriaService {
 	private CategoriaRepository repo;
 
 	public Categoria find(Integer id) {
-		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
+		Optional<Categoria> optional = repo.findById(id);
+		return optional.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 	
-	public Categoria insert(Categoria obj) {
-		obj.setId(null);
-		return repo.save(obj);
+	public Categoria insert(Categoria categoria) {
+		categoria.setId(null);
+		return repo.save(categoria);
 	}
 	
-	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
+	public Categoria update(Categoria categoria) {
+		find(categoria.getId());
+		return repo.save(categoria);
 	}
 	
 	public void delete(Integer id) {
@@ -53,5 +54,9 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
 	}
 }

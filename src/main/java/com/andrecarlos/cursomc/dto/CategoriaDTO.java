@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.andrecarlos.cursomc.domain.Categoria;
 
-public class CategoriaDTO implements Serializable{
+public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;

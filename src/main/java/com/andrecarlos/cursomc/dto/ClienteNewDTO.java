@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.andrecarlos.cursomc.services.validation.ClienteInsert;
 
-@ClienteInsert // Para realizar validações personalizadas
+@ClienteInsert // Para realizar validações personalizadas (CPF ou CNPJ)
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

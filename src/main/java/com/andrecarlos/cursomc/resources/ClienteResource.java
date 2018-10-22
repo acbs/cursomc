@@ -31,12 +31,14 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
+		
 		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
+		
 		Cliente obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);
 		// Por boas práticas, após inserir iremos retornar a url do objeto
@@ -46,6 +48,7 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDTO, @PathVariable Integer id) {
+		
 		Cliente obj = service.fromDTO(objDTO);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -54,12 +57,14 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {
+		
 		List<Cliente> list = service.findAll();
 		// Convertendo uma lista para outra lista
 		// map(obj -> new ClienteDTO(obj)) - Criando uma operação pra cada elemento da lista
@@ -73,6 +78,7 @@ public class ClienteResource {
 			@RequestParam(name="linesPerPage", defaultValue="24") Integer linesPerPage, 
 			@RequestParam(name="orderBy", defaultValue="nome")  String orderBy, 
 			@RequestParam(name="direction", defaultValue="ASC")  String direction) {
+		
 		Page<Cliente> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
 		return ResponseEntity.ok().body(listDto);

@@ -30,6 +30,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+		
 		Categoria categoria = service.find(id);
 		return ResponseEntity.ok().body(categoria);
 	}
@@ -39,6 +40,7 @@ public class CategoriaResource {
 	// <Void> retorna o corpo vazio
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
+		
 		Categoria obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);
 		// Por boas práticas, após inserir iremos retornar a url do objeto
@@ -48,6 +50,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id) {
+		
 		Categoria obj = service.fromDTO(objDTO);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -56,12 +59,14 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		
 		List<Categoria> list = service.findAll();
 		// Convertendo uma lista para outra lista
 		// map(obj -> new CategoriaDTO(obj)) - Criando uma operação pra cada elemento da lista
@@ -75,6 +80,7 @@ public class CategoriaResource {
 			@RequestParam(name="linesPerPage", defaultValue="24") Integer linesPerPage, 
 			@RequestParam(name="orderBy", defaultValue="nome")  String orderBy, 
 			@RequestParam(name="direction", defaultValue="ASC")  String direction) {
+		
 		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listDto);

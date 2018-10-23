@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 
 import com.andrecarlos.cursomc.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto") // Será o campo adicional da classe Pagamento @type
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	

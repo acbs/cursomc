@@ -20,6 +20,7 @@ import com.andrecarlos.cursomc.domain.PagamentoComCartao;
 import com.andrecarlos.cursomc.domain.Pedido;
 import com.andrecarlos.cursomc.domain.Produto;
 import com.andrecarlos.cursomc.domain.enums.EstadoPagamento;
+import com.andrecarlos.cursomc.domain.enums.Perfil;
 import com.andrecarlos.cursomc.domain.enums.TipoCliente;
 import com.andrecarlos.cursomc.repositories.CategoriaRepository;
 import com.andrecarlos.cursomc.repositories.CidadeRepository;
@@ -123,22 +124,28 @@ public class DBService {
 		estadoRepository.saveAll(Arrays.asList(estado1, estado2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 		
-		Cliente cli1 = new Cliente(null, "Ilma Alves", "ilma.leoncio.alves@gmail.com", "05188436450", TipoCliente.PESSOAFISICA, pe.encode("123"));
-		cli1.getTelefones().addAll(Arrays.asList("99887766", "99887755"));
+		Cliente cliente1 = new Cliente(null, "Ilma Alves", "ilma.leoncio.alves@gmail.com", "05188436450", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cliente1.getTelefones().addAll(Arrays.asList("99887766", "99887755"));
 
-		Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "50721020", cli1, cidade1);
-		Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "53290270", cli1, cidade2);
+		Cliente cliente2 = new Cliente(null, "Ana Costa", "andre.carlos1993@hotmail.com", "70230903045", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cliente2.getTelefones().addAll(Arrays.asList("999998888", "988887777"));
+		cliente2.addPerfil(Perfil.ADMIN);
+		
+		Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "50721020", cliente1, cidade1);
+		Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "53290270", cliente1, cidade2);
+		Endereco endereco3 = new Endereco(null, "Avenida Matos", "2106", null, "Centro", "53230230", cliente2, cidade2);
 
 		// Associando os endereços ao cliente
-		cli1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+		cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+		cliente2.getEnderecos().addAll(Arrays.asList(endereco3));
 
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+		clienteRepository.saveAll(Arrays.asList(cliente1, cliente2));
+		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
-		Pedido pedido1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, endereco1);
-		Pedido pedido2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, endereco2);
+		Pedido pedido1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cliente1, endereco1);
+		Pedido pedido2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cliente1, endereco2);
 
 		Pagamento pagamento1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
 		pedido1.setPagamento(pagamento1);
@@ -147,7 +154,7 @@ public class DBService {
 		pedido2.setPagamento(pagamento2);
 
 		// Associando os pedidos ao cliente
-		cli1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+		cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
 		
 		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
 		pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));

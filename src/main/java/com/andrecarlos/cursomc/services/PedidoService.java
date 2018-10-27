@@ -75,7 +75,7 @@ public class PedidoService {
 		// Salvando o ItemPedido
 		itemPedidoRepository.saveAll(obj.getItens());
 		// Para enviar email de confirmação
-		emailService.sendOrderConfirmationEmail(obj);
+		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
 	}
 }

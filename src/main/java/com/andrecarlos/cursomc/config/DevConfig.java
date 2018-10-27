@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.andrecarlos.cursomc.services.DBService;
+import com.andrecarlos.cursomc.services.EmailService;
+import com.andrecarlos.cursomc.services.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -29,5 +31,11 @@ public class DevConfig {
 		
 		dbService.instantiateTestDatabase();
 		return true;
+	}
+	
+	// Deixando esse metodo disponível, para quando for injetado (@Autowired) no SmtpEmailService, ele reconhecer e retornar o SmtpEmailService
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }

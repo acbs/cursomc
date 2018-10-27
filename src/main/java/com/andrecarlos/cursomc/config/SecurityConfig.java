@@ -7,21 +7,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.andrecarlos.cursomc.security.JWTAuthenticationFilter;
+import com.andrecarlos.cursomc.security.JWTUtil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	// Irá pegar a implementação UserDetailsServiceImpl
+	@Autowired
+	private UserDetailsService userDetailsService; 
+	
 	@Autowired
 	private Environment env;
+	
+	@Autowired
+	private JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**"
@@ -51,10 +63,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
 		
+		// Registrando o filtro de autenticação
+		// authenticationManager() já é um método disponível da classe WebSecurityConfigurerAdapter
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		
 		// Assegurando que o backend não criará sessão de usuário
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		// Quem será capaz de buscar o usuário por email
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	}
+	
 	// Permitindo acesso aos endpoints com multiplas fontes com as configurações básicas
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {

@@ -69,4 +69,8 @@ public class UserSS implements UserDetails {
 		return true; // Usuário está ativo
 	}
 
+	// Verificando se o usuário informado, pertence a lista de authorities
+	public boolean hasRoles(Perfil perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
 }

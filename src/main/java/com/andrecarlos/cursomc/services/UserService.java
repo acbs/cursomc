@@ -6,7 +6,9 @@ import com.andrecarlos.cursomc.security.UserSS;
 
 public class UserService {
 
-	// Obtendo usuário logado
+	/**
+	 * Obtendo usuário logado
+	 * */
 	public static UserSS authenticated() {
 		try {
 			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

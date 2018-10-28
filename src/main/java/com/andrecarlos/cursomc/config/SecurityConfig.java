@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/clientes/**"
+			"/clientes/**",
+			"/auth/forgot**"
 	};
 	
 	@Override
@@ -65,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// Permitindo todos os caminhos que estiver no PUBLIC_MATCHERS
 		// anyRequest().authenticated() Para todo o resto, exige autenticação
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() // Permitindo autorização de POST
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() // Permitindo autorização de POST (Mesmo que não esteja logado)
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() // Permitindo apenas para o metodo GET	
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();

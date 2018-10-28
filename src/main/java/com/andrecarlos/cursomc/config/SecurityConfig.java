@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,6 +25,7 @@ import com.andrecarlos.cursomc.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // Permitirá colocar anotações de pré autorização nos endpoints
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// Irá pegar a implementação UserDetailsServiceImpl
@@ -42,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**",
+			"/categorias/**"
+	};
+	
+	private static final String[] PUBLIC_MATCHERS_POST = {
 			"/clientes/**"
 	};
 	
@@ -60,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// Permitindo todos os caminhos que estiver no PUBLIC_MATCHERS
 		// anyRequest().authenticated() Para todo o resto, exige autenticação
 		http.authorizeRequests()
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() // Permitindo autorização de POST
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() // Permitindo apenas para o metodo GET	
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
